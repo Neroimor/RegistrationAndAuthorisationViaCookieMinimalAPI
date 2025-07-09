@@ -31,7 +31,14 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("User", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+    });
+});
+
 
 builder.Services.AddScoped<IPasswordHasher<User>, Argon2PasswordHasher<User>>();
 builder.Services.AddScoped<IRegistrationManagement, RegistrationManagement>();
