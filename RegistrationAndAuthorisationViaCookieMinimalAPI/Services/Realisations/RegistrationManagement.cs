@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using RegistrationAndAuthorisationViaCookieMinimalAPI.DataBase;
 using RegistrationAndAuthorisationViaCookieMinimalAPI.DTO;
 using RegistrationAndAuthorisationViaCookieMinimalAPI.Responses;
@@ -10,10 +11,10 @@ namespace RegistrationAndAuthorisationViaCookieMinimalAPI.Services.Realisations
     {
         private readonly AppDBContext _context;
         private readonly ILogger<RegistrationManagement> _logger;
-        private readonly Argon2PasswordHasher<User> _passwordHasher;
+        private readonly IPasswordHasher<User> _passwordHasher;
 
         public RegistrationManagement(AppDBContext context, ILogger<RegistrationManagement> logger,
-            Argon2PasswordHasher<User> passwordHasher)
+             IPasswordHasher<User> passwordHasher)
         {
             _context = context;
             _logger = logger;
@@ -49,7 +50,7 @@ namespace RegistrationAndAuthorisationViaCookieMinimalAPI.Services.Realisations
             return CreateResponse(responseUser, 201, "User created successfully", true);
         }
 
-        private User CreateUser(RequestUser? requestUser)
+        private User CreateUser(RequestUser requestUser)
         {
             return new User
             {
@@ -60,7 +61,7 @@ namespace RegistrationAndAuthorisationViaCookieMinimalAPI.Services.Realisations
             };
         }
 
-        private ResponseUser CreateResponseUser(User? user)
+        private ResponseUser CreateResponseUser(User user)
         {
             return new ResponseUser { 
                 Email = user.Email, 
