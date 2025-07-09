@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RegistrationAndAuthorisationViaCookieMinimalAPI.DTO
 {
-    public record class User
+    public class User
     {
 
         [Key]
@@ -16,7 +16,6 @@ namespace RegistrationAndAuthorisationViaCookieMinimalAPI.DTO
         [Required, EmailAddress]
         public string? Email { get; set; }
 
-        [RegularExpression(@"^[A-Za-z!@#$%^&*()_\-+=\[{\]};:'"",<.>/?\\|`~]+$")]
         public string? Password { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

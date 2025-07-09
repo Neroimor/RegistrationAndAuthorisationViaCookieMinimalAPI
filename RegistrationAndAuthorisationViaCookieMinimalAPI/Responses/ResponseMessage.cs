@@ -9,7 +9,7 @@
 
         public bool Success = false;
 
-        public T Data { get; set; } = default!;
+        public T? Data { get; set; } = default!;
 
     }
 }
