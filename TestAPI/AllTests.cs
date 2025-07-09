@@ -10,13 +10,13 @@ using System;
 
 namespace TestAPI
 {
-    public class RegisterTest
+    public class AllTests
     {
         private readonly RegistrationManagement _registrationManagement;
         private readonly Mock<ILogger<RegistrationManagement>> _loggerMock;
         private readonly AppDBContext _db;
 
-        public RegisterTest()
+        public AllTests()
         {
 
             _loggerMock = new Mock<ILogger<RegistrationManagement>>();
@@ -60,10 +60,26 @@ namespace TestAPI
 
             Assert.NotEqual(testUser.Password, userInDb.Password);
 
-            // А хешер может проверить этот записанный хеш как правильный
             var verify = new Argon2PasswordHasher<User>()
                 .VerifyHashedPassword(userInDb!, userInDb!.Password!, testUser.Password!);
             Assert.Equal(PasswordVerificationResult.Success, verify);
+        }
+
+        [Fact]
+        public async Task RegisterUser_RemoveUser()
+        {
+            var testUser = CreateTestUser("test@test.test", "password", "TestUser");
+            await _registrationManagement.RegisterUserAsync(testUser);
+
+            var result = await _registrationManagement.RemoveUserAsync(testUser.Email);
+
+            var userInDb = await _db.Users_Data.SingleOrDefaultAsync(u => u.Email == testUser.Email);
+
+            Assert.Null(userInDb);
+            Assert.Equal(200, result.StatusCode);
+            Assert.True(result.Success);
+            Assert.NotNull(result.Message);
+            Assert.NotNull(result.Data);
         }
     }
 
