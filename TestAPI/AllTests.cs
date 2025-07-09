@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
 using RegistrationAndAuthorisationViaCookieMinimalAPI.DataBase;
@@ -15,11 +18,13 @@ namespace TestAPI
         private readonly RegistrationManagement _registrationManagement;
         private readonly Mock<ILogger<RegistrationManagement>> _loggerMock;
         private readonly AppDBContext _db;
-
+        private readonly LoginManagement _loginManagement;
+        private readonly Mock<ILogger<LoginManagement>> _loggerLoginMock;
         public AllTests()
         {
 
             _loggerMock = new Mock<ILogger<RegistrationManagement>>();
+            _loggerLoginMock = new Mock<ILogger<LoginManagement>>();
 
 
             var options = new DbContextOptionsBuilder<AppDBContext>()
@@ -36,6 +41,11 @@ namespace TestAPI
                 logger: _loggerMock.Object,
                 passwordHasher: hasher
             );
+
+            _loginManagement = new LoginManagement(
+                context: _db,
+                logger: _loggerLoginMock.Object,
+                passwordHasher: hasher);
         }
 
         private RequestUser CreateTestUser(string email, string password, string userName)
@@ -81,6 +91,50 @@ namespace TestAPI
             Assert.NotNull(result.Message);
             Assert.NotNull(result.Data);
         }
+
+
+
+        [Fact]
+        public async Task LoginUserTestTrue()
+        {
+            var testUser = CreateTestUser("test@test.test", "password", "TestUser");
+            await _registrationManagement.RegisterUserAsync(testUser);
+
+            var services = new ServiceCollection();
+
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(opts =>
+                {
+                    opts.LoginPath = "/login";
+                    opts.LogoutPath = "/logout";
+                    opts.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                    opts.SlidingExpiration = true;
+                    opts.Cookie.HttpOnly = true;
+                    opts.Cookie.SecurePolicy = CookieSecurePolicy.None;
+                    opts.Cookie.SameSite = SameSiteMode.Lax;
+                });
+
+            services.AddLogging(); 
+            services.AddHttpContextAccessor(); 
+
+            var provider = services.BuildServiceProvider();
+
+
+            var context = new DefaultHttpContext
+            {
+                RequestServices = provider
+            };
+
+            // 3. Вызываем Login
+            var result = await _loginManagement.LoginUserAsync(context, testUser);
+
+            // 4. Проверки
+            Assert.True(result.Success);
+            Assert.Equal(200, result.StatusCode);
+            Assert.NotNull(result.Data);
+        }
+
     }
 
 }

@@ -57,6 +57,7 @@ namespace RegistrationAndAuthorisationViaCookieMinimalAPI.Services.Realisations
                 Email = requestUser.Email,
                 Password = requestUser.Password, 
                 Name = requestUser.UserName,
+                Role= "User", 
                 CreatedAt = DateTime.UtcNow
             };
         }
