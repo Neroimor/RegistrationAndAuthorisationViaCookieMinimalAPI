@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36203.30 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationAndAuthorisationViaCookieMinimalAPI", "RegistrationAndAuthorisationViaCookieMinimalAPI.csproj", "{D3072ECE-0CCA-429A-ADDD-D05143B40ABA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAPI", "..\TestAPI\TestAPI.csproj", "{A7BA39E8-F296-4BA1-9CC9-D0B844279537}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D3072ECE-0CCA-429A-ADDD-D05143B40ABA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3072ECE-0CCA-429A-ADDD-D05143B40ABA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3072ECE-0CCA-429A-ADDD-D05143B40ABA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7BA39E8-F296-4BA1-9CC9-D0B844279537}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7BA39E8-F296-4BA1-9CC9-D0B844279537}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7BA39E8-F296-4BA1-9CC9-D0B844279537}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7BA39E8-F296-4BA1-9CC9-D0B844279537}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
