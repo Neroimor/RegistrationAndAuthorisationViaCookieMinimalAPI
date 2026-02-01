@@ -40,7 +40,7 @@
 
 
 ```bash
-git clone https://github.com/Neroimor/RegistrationAndAuthorisationViaCookieMinimalAPI.git
+git clone https://github.com/Archikey/RegistrationAndAuthorisationViaCookieMinimalAPI.git
 cd RegistrationAndAuthorisationViaCookieMinimalAPI
 git checkout development
 ```
